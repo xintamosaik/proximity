@@ -30,7 +30,7 @@ def taste(character):
 def chew(line):
     signs = {}
     for c in line:
-        signs[c] = {taste(c)}
+        signs[c] = taste(c)
 
     tokens = [] # holds all the tokens of the line
 
