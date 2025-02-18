@@ -15,6 +15,9 @@ CHARACTER_MAP = {
     '#': "hashtag",
     '_': "underscore",
     ':': "colon",
+    '+': "plus",
+    '-': "minus",
+    '!': "bang",
     '\\': "backslash",
 }
 
@@ -26,33 +29,31 @@ def taste(character):
     if character.isspace():
         return "space"
     return CHARACTER_MAP[character]
-
 def chew(line):
-    signs = {c: taste(c) for c in line}
-
-    tokens = []  # Holds all the tokens of the line
-    buffer = ""  # Stores characters to form multi-character tokens
-    previous_sign = None  # Tracks the previous character type
-
-    for char, sign in signs.items():
-        # If sign changes from alphanumeric to non-alphanumeric, store buffer
-        if buffer and sign not in {"alpha", "number", "underscore"}:
-            tokens.append(buffer)
-            buffer = ""
-
-        # If it's a symbol, store it as an individual token
-        if sign not in {"alpha", "number", "underscore", "space"}:
-            tokens.append(char)
-        elif sign != "space":  # If it's not a space, add it to the buffer
+    tokens = []
+    buffer = ""
+    
+    for char in line:
+        sign = taste(char)
+        
+        # Handle alphanumeric and underscore characters (valid identifier parts)
+        if sign in {"alpha", "number", "underscore"}:
             buffer += char
-
-        previous_sign = sign
-
-    # Append the last buffered token if it exists
+        else:
+            # If we have something in the buffer, add it as a token
+            if buffer:
+                tokens.append(buffer)
+                buffer = ""
+            
+            # If it's not a space, add it as a separate token
+            if sign != "space":
+                tokens.append(char)
+    
+    # Don't forget to add the last buffer if it exists
     if buffer:
         tokens.append(buffer)
-
-    print(tokens)  # Output for debugging
+    
+    print(tokens)
 
 def ingest(source_code):    
     lines = {}
@@ -63,5 +64,5 @@ def ingest(source_code):
 
 f = open("ingest.py", "r")
 content = f.read()
-content = "example = 42"
+# content = "example = 42"
 ingest(content)
