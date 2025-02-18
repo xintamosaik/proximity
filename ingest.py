@@ -29,6 +29,7 @@ def taste(character):
     if character.isspace():
         return "space"
     return CHARACTER_MAP[character]
+
 def chew(line):
     tokens = []
     buffer = ""
@@ -36,20 +37,16 @@ def chew(line):
     for char in line:
         sign = taste(char)
         
-        # Handle alphanumeric and underscore characters (valid identifier parts)
         if sign in {"alpha", "number", "underscore"}:
             buffer += char
         else:
-            # If we have something in the buffer, add it as a token
             if buffer:
                 tokens.append(buffer)
                 buffer = ""
             
-            # If it's not a space, add it as a separate token
             if sign != "space":
                 tokens.append(char)
     
-    # Don't forget to add the last buffer if it exists
     if buffer:
         tokens.append(buffer)
     
@@ -60,9 +57,8 @@ def ingest(source_code):
     for line_num, line in enumerate(source_code.split("\n"), start=1):
         lines[line_num] = {line}    
         chew(line)
-    # print(lines)
 
 f = open("ingest.py", "r")
 content = f.read()
-# content = "example = 42"
+
 ingest(content)
