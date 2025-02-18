@@ -50,13 +50,14 @@ def chew(line):
     if buffer:
         tokens.append(buffer)
     
-    print(tokens)
+    return tokens
 
 def ingest(source_code):    
     lines = {}
     for line_num, line in enumerate(source_code.split("\n"), start=1):
-        lines[line_num] = {line}    
-        chew(line)
+        lines[line_num] =  chew(line)
+       
+    print (lines)
 
 f = open("ingest.py", "r")
 content = f.read()
