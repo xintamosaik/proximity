@@ -1,3 +1,23 @@
+CHARACTER_MAP = {
+    '(': "bracket_round_left",
+    ')': "bracket_round_right",
+    '{': "bracket_curly_left",
+    '}': "bracket_curly_right",
+    '[': "bracket_square_left",
+    ']': "bracket_square_right",
+    '>': "bigger_then",
+    '<': "smaller_then",
+    ',': "comma",
+    '.': "dot",
+    '"': "quote_double",
+    "'": "quote_single",
+    '=': "equal",
+    '#': "hashtag",
+    '_': "underscore",
+    ':': "colon",
+    '\\': "backslash",
+}
+
 def taste(character):
     if character.isalpha():
         return "alpha"
@@ -5,49 +25,24 @@ def taste(character):
         return "number"
     if character.isspace():
         return "space"
-    if character == '(':
-        return "bracket_round_left"
-    if character == ')':
-        return "bracket_round_right"
-    if character == '{':
-        return "bracket_curly_left"
-    if character == '}':
-        return "bracket_curly_right"
-    if character == '[':
-        return "bracket_square_left"
-    if character == ']':
-        return "bracket_square_right"
-    if character == ',':
-        return "comma"
-    if character == '.':
-        return "dot"
-    if character == '"':
-        return "quote_double"
-    if character == "'":
-        return "quote_single"
-    if character == '=':
-        return "equal"
-    if character == '#':
-        return "hashtag"
-    if character == '_':
-        return "underscore"
-    if character == ':':
-        return "colon"
-    if character == '\\':
-        return "backslash"
-    
-    
-    
-    print(character)
+    return CHARACTER_MAP[character]
     
 def chew(line):
-    characters = {}
-    current = ''
-    currentToken = ''
-    tokens = []
-
+    signs = {}
     for c in line:
-        characters[c] = {taste(c)}
+        signs[c] = {taste(c)}
+
+    tokens = [] # holds all the tokens of the line
+
+    current = '' # holds the characters until a new token begins
+    previousSign = '' # holds the 
+
+    for char, sign in signs.items():
+        print(char, sign)
+        print(sign)
+        print(type(sign))
+        if sign == "space":
+            print("is space")
 
 def ingest(source_code):    
     lines = {}
@@ -58,5 +53,5 @@ def ingest(source_code):
 
 f = open("ingest.py", "r")
 content = f.read()
-    
+content = "exampe = 42"
 ingest(content)
