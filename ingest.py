@@ -26,23 +26,33 @@ def taste(character):
     if character.isspace():
         return "space"
     return CHARACTER_MAP[character]
-    
+
 def chew(line):
-    signs = {}
-    for c in line:
-        signs[c] = taste(c)
+    signs = {c: taste(c) for c in line}
 
-    tokens = [] # holds all the tokens of the line
-
-    current = '' # holds the characters until a new token begins
-    previousSign = '' # holds the 
+    tokens = []  # Holds all the tokens of the line
+    buffer = ""  # Stores characters to form multi-character tokens
+    previous_sign = None  # Tracks the previous character type
 
     for char, sign in signs.items():
-        print(char, sign)
-        print(sign)
-        print(type(sign))
-        if sign == "space":
-            print("is space")
+        # If sign changes from alphanumeric to non-alphanumeric, store buffer
+        if buffer and sign not in {"alpha", "number", "underscore"}:
+            tokens.append(buffer)
+            buffer = ""
+
+        # If it's a symbol, store it as an individual token
+        if sign not in {"alpha", "number", "underscore", "space"}:
+            tokens.append(char)
+        elif sign != "space":  # If it's not a space, add it to the buffer
+            buffer += char
+
+        previous_sign = sign
+
+    # Append the last buffered token if it exists
+    if buffer:
+        tokens.append(buffer)
+
+    print(tokens)  # Output for debugging
 
 def ingest(source_code):    
     lines = {}
@@ -53,5 +63,5 @@ def ingest(source_code):
 
 f = open("ingest.py", "r")
 content = f.read()
-content = "exampe = 42"
+content = "example = 42"
 ingest(content)
