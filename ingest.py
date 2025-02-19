@@ -56,10 +56,11 @@ def ingest(source_code):
     lines = {}
     for line_num, line in enumerate(source_code.split("\n"), start=1):
         lines[line_num] =  chew(line)
-       
-    print (lines)
+    return lines   
+
 
 f = open("ingest.py", "r")
 content = f.read()
 
-ingest(content)
+code = ingest(content)
+print(code)
