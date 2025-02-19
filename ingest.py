@@ -82,5 +82,5 @@ def digest(code):
 f = open("ingest.py", "r")
 content = f.read()
 code = ingest(content)
-print(code)
-# digest(code)
+
+digest(code)
