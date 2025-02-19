@@ -26,6 +26,8 @@ KEYWORDS_MAP = [
     "if",
     "else",
     "def",
+    "in",
+    "return"
 ]
 
 def taste(character):
@@ -47,38 +49,38 @@ def chew(line):
             buffer += char
         else:
             if buffer:
-                tokens.append(("word", buffer))
+                token_type = "keyword" if buffer in KEYWORDS_MAP else "identifier"
+                tokens.append(("word", buffer, token_type))
                 buffer = ""
             
             if sign != "space":
-                tokens.append(("special", char))
+                tokens.append(("special", char, CHARACTER_MAP[char]))
+    
     if buffer:
-        tokens.append(("word",buffer))
+        token_type = "keyword" if buffer in KEYWORDS_MAP else "identifier"
+        tokens.append(("word", buffer, token_type))
     return tokens
 
 def ingest(source_code):    
     lines = {}
     for line_num, line in enumerate(source_code.split("\n"), start=1):
-        lines[line_num] =  chew(line)
+        lines[line_num] = chew(line)
     return lines   
-
 
 def digest(code):
     for row, line in code.items():
-        
-        for parts in line:
-            if (parts[0] == "word"):
-                word = parts[1]
-                if word in KEYWORDS_MAP:
-                    print ("keyword", word)
-                else:
-                    print("identifier", word)
+        print(f"\nLine {row}:")
+        for token in line:
+            if token[0] == "word":
+                _, word, word_type = token
+                print(f"{word_type}: {word}")
+            else:
+                _, char, char_type = token
+                print(f"special ({char_type}): {char}")
 
-
-
+# Test code
 f = open("ingest.py", "r")
 content = f.read()
-
 code = ingest(content)
-digest(code)
-
+print(code)
+# digest(code)
